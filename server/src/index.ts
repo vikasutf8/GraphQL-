@@ -2,7 +2,7 @@ import express,{ Application, Response,Request} from "express";
 import "dotenv/config";
 import cors from "cors"
 import { expressMiddleware } from "@apollo/server/express4";
-import apolloServer from "./config/apolloServer";
+import apolloServer from "./config/apolloServer.js";
 
 
 const app:Application =express();

@@ -1,5 +1,5 @@
 import { create } from "domain";
-import prisma from "../../config/database";
+import prisma from "../../config/database.js";
 
 
 //this resolver query alway a function that return data or hit from database
