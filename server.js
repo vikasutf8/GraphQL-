@@ -8,7 +8,8 @@ import mongoose from "mongoose";
 import Event from "./models/event.model.js";
 import User from "./models/user.model.js";
 import bcrypt from "bcryptjs";
-import e from "express";
+import schema from "./graphql/schemas/index.js";
+import resolvers from "./graphql/resolvers/index.js";
 
 const app = express();
 app.use(bodyParser.json());
@@ -16,164 +17,12 @@ app.use(cors());
 
 // const events = [];
 
-const userfn =userId =>{
-    console.log("userfn ",userId, this)
-    return User.findById(userId).then(user=>{
-        // console.log(user);
-        
-          return {...user._doc, _id:user.id, createdEvents:eventList.bind(this,user.createdEvents)}
-          
-          
-    }).catch((err) => {
-        console.log(err);
-        throw new Error(err);
-    });
-}
-console.log(userfn);
 
-const eventList =eventId =>{
-    console.log("eventList ",eventId, this)
-    return Event.find({_id:{$in:eventId}}).then(events=>{
-        // console.log(events);
-          return events.map(event=>{
-            console.log(event)
-              return {...event._doc, _id:event.id, creator:userfn.bind(this,event.creator)}
-          })
-    }).catch((err) => {
-        console.log(err);
-        throw new Error(err);
-    });
-}
-
-console.log(eventList);
 app.use(
   "/graphql",
   graphqlHTTP({
-    schema: buildSchema(`
-        type Event{
-            _id:ID!
-            name:String!
-            description:String!
-            price:Float!
-            date:String!
-            creator :User!
-
-        }
-
-        type User{
-            _id:ID!
-            email:String!
-            password:String
-            createdEvents:[Event!]
-        }
-        
-        input EventInput{
-            name:String!
-            description:String!
-            price:Float!
-            date:String!
-        }
-
-        input UserInput{
-            email:String!
-            password:String
-        }
-
-        type RootQuery{
-            events:[Event!]!
-        }
-
-        type RootMutation{
-            createEvent(eventInput:EventInput):Event
-            createUser(userInput:UserInput):User
-        }
-        schema {
-            query: RootQuery
-            mutation: RootMutation
-        }
-    `),
-    rootValue: {
-      events: () => {
-
-        return Event.find()
-          .then((res) => {
-            return res.map((event) => {
-              return { ...event._doc,
-                 _id: event.id ,
-                creator: userfn.bind(this,event._doc.creator)
-                };
-            });
-          })
-          .catch((err) => {
-            console.log(err);
-            throw new Error(err);
-          });
-      },
-      createEvent: (args) => {
-        const event = new Event({
-          name: args.eventInput.name,
-          description: args.eventInput.description,
-          price: +args.eventInput.price,
-          date: new Date(args.eventInput.date),
-          //   creator: args.eventInput.creator,
-          creator: "686a22a094572b0d0b1d29f5",
-        });
-        let createdEvent;
-        return event
-          .save()
-          .then((res) => {
-            createdEvent = { ...res._doc, _id: res._doc._id.toString() };
-            return User.findById("686a22a094572b0d0b1d29f5");
-          })
-            .then((user) => {
-                if (!user) {
-                throw new Error("User not found");
-                }
-                user.createdEvents.push(event);
-                return user.save();
-            })
-          .then((res) => {
-            return createdEvent;
-          })
-          .catch((err) => {
-            console.log(err);
-            throw new Error(err);
-          });
-      },
-      createUser: (args) => {
-        return User.findOne({ email: args.userInput.email })
-          .then((user) => {
-            if (user) {
-              throw new Error("User already exists");
-            }
-            return bcrypt.hash(args.userInput.password, 12);
-          })
-          .then((hashPass) => {
-            const user = new User({
-              email: args.userInput.email,
-              password: hashPass,
-            });
-            return user
-              .save()
-              .then((res) => {
-                console.log(res);
-                return {
-                  ...res._doc,
-                  password: null,
-                  _id: res._doc._id.toString(),
-                };
-              })
-              .catch((err) => {
-                console.log(err);
-                throw new Error(err);
-              });
-          })
-          .catch((err) => {
-            console.log(err);
-            throw new Error(err);
-          });
-      },
-    },
+    schema: schema,
+    rootValue: resolvers,
     graphiql: true,
   })
 );
