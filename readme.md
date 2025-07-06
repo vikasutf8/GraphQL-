@@ -4,9 +4,7 @@ import { graphqlHTTP } from 'express-graphql';
 
 app.use('/graphql', graphqlHTTP({
     schema:null,
-    rootValue:{
-        
-    }
+    rootValue:{}
 }))
 
 - schema : is passing schema object to graphqlHTTP middleware

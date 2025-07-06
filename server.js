@@ -4,20 +4,41 @@ import cors from "cors";
 import "dotenv/config";
 import { graphqlHTTP } from "express-graphql";
 import { buildSchema } from "graphql";
+import e from "express";
+
+
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
+
+const events=[];
 
 app.use(
   "/graphql",
   graphqlHTTP({
     schema: buildSchema(`
+        type Event{
+            _id:ID!
+            name:String!
+            description:String!
+            price:Float!
+            date:String!
+
+        }
+        
+        input EventInput{
+            name:String!
+            description:String!
+            price:Float!
+            date:String!
+        }
+
         type RootQuery{
-            events:[String!]!
+            events:[Event!]!
         }
 
         type RootMutation{
-            createEvent(name:String!):String!
+            createEvent(eventInput:EventInput!):Event!
         }
         schema {
             query: RootQuery
@@ -26,11 +47,18 @@ app.use(
     `),
     rootValue: {
       events: () => {
-        return ["event1", "event2", "event3"];
+        return events;
       },
       createEvent: (args) => {
-        const eventName = args.name;
-        return eventName;
+        const event ={
+            _id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+            name: args.eventInput.name,
+            description: args.eventInput.description,
+            price: +args.eventInput.price,
+            date: args.eventInput.date,
+        }
+        events.push(event);
+        return event;
       },
     },
     graphiql: true,
