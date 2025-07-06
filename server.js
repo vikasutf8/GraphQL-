@@ -8,13 +8,44 @@ import mongoose from "mongoose";
 import Event from "./models/event.model.js";
 import User from "./models/user.model.js";
 import bcrypt from "bcryptjs";
+import e from "express";
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const events = [];
+// const events = [];
 
+const userfn =userId =>{
+    console.log("userfn ",userId, this)
+    return User.findById(userId).then(user=>{
+        // console.log(user);
+        
+          return {...user._doc, _id:user.id, createdEvents:eventList.bind(this,user.createdEvents)}
+          
+          
+    }).catch((err) => {
+        console.log(err);
+        throw new Error(err);
+    });
+}
+console.log(userfn);
+
+const eventList =eventId =>{
+    console.log("eventList ",eventId, this)
+    return Event.find({_id:{$in:eventId}}).then(events=>{
+        // console.log(events);
+          return events.map(event=>{
+            console.log(event)
+              return {...event._doc, _id:event.id, creator:userfn.bind(this,event.creator)}
+          })
+    }).catch((err) => {
+        console.log(err);
+        throw new Error(err);
+    });
+}
+
+console.log(eventList);
 app.use(
   "/graphql",
   graphqlHTTP({
@@ -25,6 +56,7 @@ app.use(
             description:String!
             price:Float!
             date:String!
+            creator :User!
 
         }
 
@@ -32,7 +64,7 @@ app.use(
             _id:ID!
             email:String!
             password:String
-            
+            createdEvents:[Event!]
         }
         
         input EventInput{
@@ -62,12 +94,14 @@ app.use(
     `),
     rootValue: {
       events: () => {
-        // return events;
+
         return Event.find()
           .then((res) => {
             return res.map((event) => {
-              // return {...event._doc, _id : event._doc._id.toString()};
-              return { ...event._doc, _id: event.id };
+              return { ...event._doc,
+                 _id: event.id ,
+                creator: userfn.bind(this,event._doc.creator)
+                };
             });
           })
           .catch((err) => {
