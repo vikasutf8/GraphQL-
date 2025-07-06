@@ -17,6 +17,10 @@ const evetSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  creator:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+  }
 });
 
 const Event = mongoose.model("Event", evetSchema);
