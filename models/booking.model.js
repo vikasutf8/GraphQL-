@@ -11,7 +11,9 @@ const bookingSchema = new mongoose.Schema({
         ref:"User"
     },  
 },
- timestamps=true
+ {
+    timestamps:true,
+ }
 )
 
 const Booking = mongoose.model("Booking",bookingSchema);

@@ -7,6 +7,8 @@ import mongoose from "mongoose";
 import schema from "./graphql/schemas/index.js";
 import resolvers from "./graphql/resolvers/index.js";
 
+
+
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());

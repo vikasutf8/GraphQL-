@@ -12,3 +12,10 @@ app.use('/graphql', graphqlHTTP({
 
 import { buildSchema} from 'graphql';
 - buildSchema : takes a string and takes the schema string and returns a schema object
+
+
+
+
+
+
+
