@@ -17,21 +17,24 @@ import { tansformEvent } from "./index.js";
     }
   };
 
-  const createEvent = async (args) => {
+  const createEvent = async (args, req) => {
     try {
+      if(!req.isAuth){
+        throw new Error("You are not authorized to create event");
+      }
       const event = new Event({
         name: args.eventInput.name,
         description: args.eventInput.description,
         price: +args.eventInput.price,
         date: new Date(args.eventInput.date),
-        creator: "686a22a094572b0d0b1d29f5",
+        creator: req.userId,
       });
       const res = await event.save();
       //what we Doing :: created an envent. that should be first stored in event database but other side user database also listing each events of that specific user created.. that new event object should be passed in users database are array of events
       let createdEvent;
       createdEvent = tansformEvent(res);
 
-      const creator = await User.findById("686a22a094572b0d0b1d29f5");
+      const creator = await User.findById(req.userId);
 
       if (!creator) {
         throw new Error("User not found");

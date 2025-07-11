@@ -28,6 +28,12 @@ const schema=buildSchema(`
             password:String
             createdEvents:[Event!]
         }
+
+        type AuthData{
+            userId :ID!
+            token :String!
+            tokenExpiry:Int!
+        }
         
 
         
@@ -46,6 +52,7 @@ const schema=buildSchema(`
         type RootQuery{
             events:[Event!]!
             bookings:[Booking!]!
+            login(email:String!,password:String!)
         }
 
         type RootMutation{

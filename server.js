@@ -6,13 +6,13 @@ import { graphqlHTTP } from "express-graphql";
 import mongoose from "mongoose";
 import schema from "./graphql/schemas/index.js";
 import resolvers from "./graphql/resolvers/index.js";
-
+import isAuth from "./middleware/is-auth.js";
 
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
-
+app.use(isAuth);
 
 // const events = [];
 
