@@ -7,8 +7,10 @@ const MainNavigation = (props) => {
   return (
     <header className="main-navigation">
       <div className="main-navigation__logo">
+        <Link to="/" >
         <FaVrCardboard /> {/* VR Logo */}
         <h1>Your VR Hub</h1>
+        </Link>
       </div>
       <nav className="main-navigation__items">
         <ul>

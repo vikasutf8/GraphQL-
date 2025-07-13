@@ -1,13 +1,35 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Home.css */
+
+/* --- CSS Variables for consistent styling --- */
+:root {
+    --color-primary-blue: #2563eb; /* Strong blue */
+    --color-primary-indigo: #4f46e5; /* Deep indigo */
+    --color-secondary-blue: #1d4ed8; /* Darker blue */
+    --color-secondary-indigo: #3730a3; /* Darker indigo */
+    --color-light-gray: #f9fafb; /* Very light background */
+    --color-medium-gray: #e5e7eb; /* Light background for sections */
+    --color-dark-text: #1f2937; /* Dark text for headings */
+    --color-body-text: #4b5563; /* Medium text for paragraphs */
+    --color-light-text: #6b7280; /* Lighter text for meta info */
+    --color-white: #ffffff;
+    --color-accent-teal: #1abc9c; /* Teal for specific accents */
+    --color-accent-yellow: #eab308; /* Yellow for stars/highlights */
+
+    --shadow-light: rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    --shadow-medium: rgba(0, 0, 0, 0.2); /* More pronounced shadow */
+    --shadow-strong: rgba(0, 0, 0, 0.3); /* Strongest shadow for lift */
+
+    --border-radius-sm: 0.5rem; /* 8px */
+    --border-radius-md: 0.75rem; /* 12px */
+    --border-radius-full: 9999px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* --- Base Styles --- */
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    color: var(--color-body-text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
