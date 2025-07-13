@@ -8,14 +8,18 @@ import schema from "./graphql/schemas/index.js";
 import resolvers from "./graphql/resolvers/index.js";
 import isAuth from "./middleware/is-auth.js";
 
-
 const app = express();
 app.use(bodyParser.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3001",
+    credentials: true,
+    methods: ["POST"],
+  })
+);
 app.use(isAuth);
 
 // const events = [];
-
 
 app.use(
   "/graphql",
@@ -26,10 +30,8 @@ app.use(
   })
 );
 
-
-
-app.get('/', (req, res,next) => {
-    res.send('Hello World!');
+app.get("/", (req, res, next) => {
+  res.send("Hello World!");
 });
 
 mongoose

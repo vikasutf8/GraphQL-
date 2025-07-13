@@ -1,0 +1,91 @@
+/* Form.css (or integrate into a global stylesheet) */
+
+.auth-form {
+  margin: 3rem auto;
+  width: 90%;
+  max-width: 30rem; /* Limit width for better readability */
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Softer, more pronounced shadow */
+  background-color: #ffffff; /* White background for the form itself */
+  padding: 2rem;
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.auth-form h2 { /* If you add a heading to your form */
+  text-align: center;
+  color: #2c3e50; /* Dark blue/grey */
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+}
+
+.form-control {
+  margin-bottom: 1.5rem; /* Space between form groups */
+}
+
+.form-control label {
+  display: block; /* Make label take its own line */
+  margin-bottom: 0.5rem;
+  color: #34495e; /* Slightly lighter dark blue for labels */
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.form-control input[type="email"],
+.form-control input[type="password"] {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ccc; /* Light grey border */
+  border-radius: 5px;
+  font-size: 1rem;
+  color: #333;
+  box-sizing: border-box; /* Include padding in width */
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.form-control input[type="email"]:focus,
+.form-control input[type="password"]:focus {
+  outline: none; /* Remove default outline */
+  border-color: #1abc9c; /* Teal border on focus */
+  box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.2); /* Soft teal glow on focus */
+}
+
+.auth-form div:last-of-type { /* Targeting the div containing the buttons */
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 1rem; /* Space between buttons */
+}
+
+.auth-form button[type="submit"],
+.auth-form button[type="button"] { /* Apply to both button types */
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.auth-form button[type="submit"] {
+  background-color: #1abc9c; /* Vibrant teal for primary action */
+  color: white;
+  font-weight: bold;
+}
+
+.auth-form button[type="submit"]:hover,
+.auth-form button[type="submit"]:active {
+  background-color: #16a085; /* Darker teal on hover/active */
+  transform: translateY(-1px); /* Slight lift */
+}
+
+.auth-form button[type="button"] { /* For the 'Switch to Register' button */
+  background-color: #bdc3c7; /* Light grey for secondary action */
+  color: #34495e; /* Darker text for contrast */
+}
+
+.auth-form button[type="button"]:hover,
+.auth-form button[type="button"]:active {
+  background-color: #95a5a6; /* Darker grey on hover/active */
+  color: white;
+  transform: translateY(-1px);
+}
