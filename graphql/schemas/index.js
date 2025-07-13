@@ -52,7 +52,7 @@ const schema=buildSchema(`
         type RootQuery{
             events:[Event!]!
             bookings:[Booking!]!
-            login(email:String!,password:String!)
+            login(email:String!,password:String!): AuthData!
         }
 
         type RootMutation{
