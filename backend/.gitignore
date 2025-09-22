@@ -3,3 +3,5 @@ build
 .env
 yarn.lock
 package-lock.json
+
+/generated/prisma

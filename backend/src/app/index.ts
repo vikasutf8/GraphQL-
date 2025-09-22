@@ -4,9 +4,12 @@ import { ApolloServer } from '@apollo/server';
 import bodyParser from 'body-parser';
 import { expressMiddleware } from '@as-integrations/express5';
 
+
 async function startServer() {
     const app = express();
     app.use(bodyParser.json());
+
+    
 
     const graphqlServer = new ApolloServer({
         typeDefs: `
