@@ -8,6 +8,8 @@ import { FaRegEnvelope } from "react-icons/fa";
 import { LiaTwitterSquare } from "react-icons/lia";
 import { CgProfile,CgMoreO  } from "react-icons/cg";
 import FeedCard from "@/components/FeedCard";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+import { useCallback } from "react";
 
 interface TwitterIconProps {
     title: string;
@@ -50,6 +52,10 @@ const sidebarMenuIcons: TwitterIconProps[] = [
 ]
 
 export default function Home() {
+
+const handleLoginWithGoogle =useCallback((cred: CredentialResponse) => {
+  
+}, []);
   return (
       <div>
         <div className="grid grid-cols-12 h-screen w-screen px-56">
@@ -83,8 +89,11 @@ export default function Home() {
           <div className="col-span-5 border-l-1 border-r-1 border border-gray-600 ">
                 <FeedCard />
           </div>
-          <div className="col-span-3 ">
-            
+          <div className="col-span-3 p-5 w-fit">
+             <div className="border border-gray-200 p-5 bg-gray-600 rounded-lg">
+              <h1 className="text-2xl my-2 ">New to Twitter?</h1>
+             <GoogleLogin onSuccess={(credentialResponse) => console.log(credentialResponse)} />
+             </div>
           </div>
         </div>
       </div> 
