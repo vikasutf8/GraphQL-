@@ -7,6 +7,7 @@ import { RiNotification4Line } from "react-icons/ri";
 import { FaRegEnvelope } from "react-icons/fa";
 import { LiaTwitterSquare } from "react-icons/lia";
 import { CgProfile,CgMoreO  } from "react-icons/cg";
+import FeedCard from "@/components/FeedCard";
 
 interface TwitterIconProps {
     title: string;
@@ -53,7 +54,7 @@ export default function Home() {
       <div>
         <div className="grid grid-cols-12 h-screen w-screen px-56">
 
-          <div className="col-span-3 border border-red-500  px-4  pt-8">
+          <div className="col-span-3 px-4 pt-8">
             <div className="p-2 text-4xl h-fit w-fit hover:bg-gray-500 hover:rounded-full cursor-pointer transition-all">
             <FaSquareXTwitter />
             </div>
@@ -79,13 +80,13 @@ export default function Home() {
             </div>
           
           </div>
-          <div className="col-span-6 border-x-1 border-slate-600">
-                
+          <div className="col-span-5 border-l-1 border-r-1 border border-gray-600 ">
+                <FeedCard />
           </div>
           <div className="col-span-3 ">
             
           </div>
         </div>
-      </div>
+      </div> 
   );
 }
