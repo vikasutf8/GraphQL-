@@ -13,8 +13,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/axios": "^0.9.36",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.5.2",
     "prisma": "^6.16.2",
     "tsc-watch": "^7.1.1",
@@ -25,11 +27,13 @@
     "@apollo/server": "^5.0.0",
     "@as-integrations/express5": "^1.1.2",
     "@prisma/client": "^6.16.2",
+    "axios": "^1.12.2",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "graphql": "^16.11.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.1"
   }
 }
