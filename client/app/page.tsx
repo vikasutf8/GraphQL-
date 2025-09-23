@@ -13,6 +13,7 @@ import { useCallback } from "react";
 import toast from "react-hot-toast";
 import graphQLClient from "@/clients/api";
 import { verifyGoogleToken } from "@/graphql/query/user";
+import { useCurrentUser } from "@/hooks/user";
 
 interface TwitterIconProps {
     title: string;
@@ -55,6 +56,9 @@ const sidebarMenuIcons: TwitterIconProps[] = [
 ]
 
 export default function Home() {
+
+const {user} = useCurrentUser();
+console.log(user)
 
 const handleLoginWithGoogle =useCallback(async(cred: CredentialResponse) => {
   const googleToken = cred.credential; 
