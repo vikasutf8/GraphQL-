@@ -78,3 +78,8 @@ Response.data
 
 ---
 Codegen --
+
+---
+
+React Query - TanStack Query
+to cache data
