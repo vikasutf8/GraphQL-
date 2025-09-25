@@ -7,5 +7,6 @@ const graphQLClient = new GraphQLClient('http://localhost:8181/graphql',{
         Authorization: isClient ? `Bearer ${ window.localStorage.getItem('__twitterAccessToken')}` : ""
     }
 });
-
+// console.log(`${isClient} ${window.localStorage.getItem('__twitterAccessToken')}`, "graphQLClient")
+// console.log(graphQLClient, "graphQLClient")
 export default graphQLClient;

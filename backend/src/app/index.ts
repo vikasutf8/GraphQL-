@@ -18,7 +18,7 @@ async function startServer() {
             ${User.queries}
         }`,
     resolvers: {
-      Query: {
+      Query: { 
         ...User.resolvers.Query,
       },
     },
@@ -28,12 +28,17 @@ async function startServer() {
   app.use(
     "/graphql",
     expressMiddleware(graphqlServer, {
-      context: async ({ req }) => {
-        return {
-          user: req.headers.authorization
-            ? JwtService.decodeToken(req.headers.authorization.split(" ")[1])
-            : undefined,
-        };
+      context: async ({ req ,res}) => {
+       {
+         let user;
+         if(req.headers.authorization){
+           user = JwtService.decodeToken(req.headers.authorization.split(" ")[1]);
+         }else{
+           user = undefined;
+         }
+         console.log(user, "user")
+         return {user};;
+        }
       },
     })
   );

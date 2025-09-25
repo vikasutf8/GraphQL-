@@ -61,18 +61,18 @@ const queries={
          return userToken;
     },
 
-    getCurrentUser: async(parent:any,args:any,context:GraphqlContext) => {
-        // console.log(context)
-        const id = context.user?.id;
-        if(!id)return null;
-        // return context.user;
-        const user = await prisma.user.findUnique({
-            where:{
-                id
-            }
-        });
-        return user;
-    }
+    // getCurrentUser: async(parent:any,args:any,context:GraphqlContext) => {
+    //     // console.log(context)
+    //     const id = context.user?.id;
+    //     if(!id)return null;
+    //     // return context.user;
+    //     const user = await prisma.user.findUnique({
+    //         where:{
+    //             id
+    //         }
+    //     });
+    //     return user;
+    // }
 } 
 
 export const resolvers={

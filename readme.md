@@ -82,4 +82,5 @@ Codegen --
 ---
 
 React Query - TanStack Query
-to cache data
+- to cache data
+- build context

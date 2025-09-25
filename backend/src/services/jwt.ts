@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import prisma from '../clients/db';
 import { User } from '../../generated/prisma';
 import { JwtUser } from '../interface';
 
@@ -11,6 +10,10 @@ class JwtService{
             id :user?.id,  
             email:user?.email, 
         }
+        console.log(payload,
+            
+        "payload"
+        )
         return jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1h' });
     }
 
