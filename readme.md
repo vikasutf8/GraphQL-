@@ -124,3 +124,23 @@ query GetCurrentUser {
   }
 }
 ```
+
+- All Tweets
+```
+
+
+query GetAllTweets {
+  getAllTweets {
+    id
+    content
+    tweetImageUrl
+    auther {
+      firstName
+      tweets {
+        id
+      }
+    }
+  }
+}
+```
+

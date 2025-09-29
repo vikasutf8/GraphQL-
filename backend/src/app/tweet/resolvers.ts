@@ -38,7 +38,19 @@ const extraResolvers={
     },
 }
 
+const queries={
+    getAllTweets: async (parent:any, args:any, context:GraphqlContext) => {
+        const tweets = await prisma.tweet.findMany({
+           orderBy: {
+            createdAt: "desc",
+           },
+        });
+        return tweets;
+    },
+}
+
 export const resolvers = {
     mutations,
     extraResolvers,
+    queries,
 }; 
