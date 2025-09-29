@@ -6,7 +6,7 @@ import {
   GoogleOAuthProvider
 } from "@react-oauth/google";
 import { Toaster } from "react-hot-toast";
-import QueryProvider from "../providers/QueryProvider";
+// import QueryProvider from "../providers/QueryProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,18 +29,21 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
+}>) {
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <QueryProvider>
+        {/* <QueryClientProvider client={queryClient}> */}
           <GoogleOAuthProvider clientId="94720129069-ebgd3njqtkditbidfuhle5jbbl1kiu62.apps.googleusercontent.com">
             {children}
             <Toaster />
           </GoogleOAuthProvider>
-        </QueryProvider>
+        {/* </QueryClientProvider> */}
+     
         
       </body>
     </html>
   );
+}

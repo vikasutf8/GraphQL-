@@ -12,7 +12,7 @@ import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { useCallback } from "react";
 import toast from "react-hot-toast";
 import graphQLClient from "@/clients/api";
-import { verifyGoogleToken } from "@/graphql/query/user";
+import { verifyGoogleToken} from "@/graphql/query/user";
 // import { useCurrentUser } from "@/hooks/user";
 
 interface TwitterIconProps {
@@ -61,8 +61,8 @@ export default function Home() {
 // console.log(user)
 
 const handleLoginWithGoogle =useCallback(async(cred: CredentialResponse) => {
+
   const googleToken = cred.credential; 
-  
   if(!googleToken) return toast.error("Authentication failed");
 
   const res = await graphQLClient.request(verifyGoogleToken,{token: googleToken})

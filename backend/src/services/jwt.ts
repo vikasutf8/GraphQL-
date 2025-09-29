@@ -10,10 +10,6 @@ class JwtService{
             id :user?.id,  
             email:user?.email, 
         }
-        console.log(payload,
-            
-        "payload"
-        )
         return jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1h' });
     }
 

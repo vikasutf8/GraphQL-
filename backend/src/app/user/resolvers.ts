@@ -27,12 +27,14 @@ export interface GoogleTokenResult {
 
 const queries={
     verifyGoogleToken: async(parent:any,{token}:{token:string}) => {
+
         const googleToken = token;
         const googleOAuthUrl= new URL('https://oauth2.googleapis.com/tokeninfo');
         googleOAuthUrl.searchParams.set('id_token', googleToken);
         const response = await axios.get<GoogleTokenResult>(googleOAuthUrl.toString(),{
             responseType: 'json'
         });
+       
         const checkForUser =await prisma.user.findUnique({
             where:{
                 email:response.data.email
@@ -53,11 +55,9 @@ const queries={
             where:{
                 email:response.data.email
             }
-        });
-        // userInDb should be presemt in db
+        }); 
 
-         const userToken =await JwtService.generateTokenForUser(userInDb!); 
-       
+        const userToken =await JwtService.generateTokenForUser(userInDb!); 
          return userToken;
     },
 
@@ -76,6 +76,6 @@ const queries={
 } 
 
 export const resolvers={
-    Query:queries
+    queries
 }
   
