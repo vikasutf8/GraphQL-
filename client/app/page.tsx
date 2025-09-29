@@ -20,6 +20,8 @@ import { HiOutlineGif } from "react-icons/hi2";
 import { BsEmojiSmile } from "react-icons/bs";
 import { GoTasklist } from "react-icons/go";
 import { CiLocationOn } from "react-icons/ci";
+import { useGetAllTweets } from "@/hooks/tweet";
+import { Tweet } from "@/gql/graphql";
 // import { useCurrentUser } from "@/hooks/user";
 
 interface TwitterIconProps {
@@ -65,7 +67,8 @@ const sidebarMenuIcons: TwitterIconProps[] = [
 export default function Home() {
 const queryClient = useQueryClient();
  const {user} = useCurrentUser();
-
+const {tweets=[]} = useGetAllTweets();//initial value
+console.log(tweets)
 
 const handleLoginWithGoogle =useCallback(async(cred: CredentialResponse) => {
 
@@ -171,8 +174,12 @@ const handleSelectImage = useCallback(() => {
                           
                       </div>
             </div>
-                
-                <FeedCard />
+                {
+                  tweets?.map((tweet:any) => (
+                    tweet ? <FeedCard key={tweet.id} data={tweet as Tweet} /> : null 
+                  ))
+                }
+               
           </div>
           <div className="col-span-3 p-5 w-fit">
              {
