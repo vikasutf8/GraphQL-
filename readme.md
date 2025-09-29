@@ -84,3 +84,43 @@ Codegen --
 React Query - TanStack Query
 - to cache data
 - build context
+
+
+### Graphql Query | Mutation | Subscription
+
+- Tweet mapping with User
+```
+mutation Mutation($payload: CreateTweetData!) {
+  createTweet(payload: $payload) {
+    content
+    id
+    tweetImageUrl
+    auther {
+      id
+      profileImageUrl
+      tweets {
+        content
+      }
+    }
+  }
+  }
+}
+```
+-  Google Token(OAuth2) convert to JWT and save in DB
+
+```
+query GetCurrentUser($token: String!) {
+  
+  verifyGoogleToken(token: $token)
+}
+```
+
+- Current User
+```
+query GetCurrentUser {
+  getCurrentUser {
+    id
+    firstName
+  }
+}
+```

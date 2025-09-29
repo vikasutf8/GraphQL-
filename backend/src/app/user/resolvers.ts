@@ -2,6 +2,7 @@ import axios from "axios";
 import prisma from "../../clients/db";
 import JwtService from "../../services/jwt";
 import { GraphqlContext } from "../../interface";
+import { User } from "../../../generated/prisma";
 
 export interface GoogleTokenResult {
   iss?: string;
@@ -76,6 +77,19 @@ const queries = {
     },
 };
 
+const extraResolvers={
+    User:{
+        tweets: (parent:User) => {
+            return prisma.tweet.findMany({
+                where: {
+                    autherId: parent.id,
+                },
+            });
+        },
+    },
+}
+
 export const resolvers = {
   queries,
+  extraResolvers,
 };
