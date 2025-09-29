@@ -86,7 +86,7 @@ const handleLoginWithGoogle =useCallback(async(cred: CredentialResponse) => {
         <div className="grid grid-cols-12 h-screen w-screen px-56">
 
           <div className="col-span-3 px-4 pt-8">
-            <div className="p-2 text-4xl h-fit w-fit hover:bg-gray-500 hover:rounded-full cursor-pointer transition-all">
+            <div className="p-2 text-4xl h-fit w-fit hover:bg-gray-500 hover:rounded-full cursor-pointer transition-all relative">
             <FaSquareXTwitter />
             </div>
             <div className="mt-6  text-2xl font-semibold ">
@@ -109,6 +109,16 @@ const handleLoginWithGoogle =useCallback(async(cred: CredentialResponse) => {
                 Tweet
               </button> 
             </div>
+            {
+              user &&
+              <div className="absolute bottom-8  flex items-center gap-3  bg-slate-900 px-3 py-2 rounded-xl">
+              {user && user.profileImageUrl && <Image src={user.profileImageUrl} alt="Profile Image" width={50} height={50} className="rounded-full" />}
+              <div className="flex gap-2">
+              <h3 className="text-xl">{user?.firstName}</h3>
+              <h3 className="text-xl">{user?.lastName}</h3>
+              </div>
+            </div>
+            }
           
           </div>
           <div className="col-span-5 border-l-1 border-r-1 border border-gray-600 ">
@@ -120,6 +130,7 @@ const handleLoginWithGoogle =useCallback(async(cred: CredentialResponse) => {
               <div className="border border-gray-200 p-5 bg-gray-600 rounded-lg">
               <h1 className="text-2xl my-2 ">New to Twitter?</h1>
              <GoogleLogin onSuccess={handleLoginWithGoogle} />
+
              </div>
              }
           </div>
