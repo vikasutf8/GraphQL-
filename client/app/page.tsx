@@ -15,6 +15,11 @@ import graphQLClient from "@/clients/api";
 import { verifyGoogleToken} from "@/graphql/query/user";
 import { useCurrentUser } from "@/hooks/user";
 import { useQueryClient } from "@tanstack/react-query";
+import { IoImageOutline } from "react-icons/io5";
+import { HiOutlineGif } from "react-icons/hi2";
+import { BsEmojiSmile } from "react-icons/bs";
+import { GoTasklist } from "react-icons/go";
+import { CiLocationOn } from "react-icons/ci";
 // import { useCurrentUser } from "@/hooks/user";
 
 interface TwitterIconProps {
@@ -60,7 +65,7 @@ const sidebarMenuIcons: TwitterIconProps[] = [
 export default function Home() {
 const queryClient = useQueryClient();
  const {user} = useCurrentUser();
- console.log(user)
+
 
 const handleLoginWithGoogle =useCallback(async(cred: CredentialResponse) => {
 
@@ -81,6 +86,15 @@ const handleLoginWithGoogle =useCallback(async(cred: CredentialResponse) => {
   });
   
 }, []);
+
+const handleSelectImage = useCallback(() => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.click();
+}, []);
+
+
   return (
       <div>
         <div className="grid grid-cols-12 h-screen w-screen px-56">
@@ -122,6 +136,42 @@ const handleLoginWithGoogle =useCallback(async(cred: CredentialResponse) => {
           
           </div>
           <div className="col-span-5 border-l-1 border-r-1 border border-gray-600 ">
+
+            <div>
+               <div className=' border border-r-0 border-b-0 border-l-0 border-gray-600 p-5 hover:bg-slate-900 transition-all cursor-pointer' >
+                          <div className='grid grid-cols-12 gap-4 '>
+                              <div className='col-span-1'>
+                                {user && user.profileImageUrl && <Image src={user.profileImageUrl} alt="Profile Image" width={50} height={50} className="rounded-full" />}
+                              </div>
+                              <div className='col-span-11'>
+                                <textarea
+                                 
+                                 className="w-full bg-transparent text-xl px-3 border-b border-gray-600 outline-none" 
+                                 placeholder="What is on your mind?"
+                                rows={4}>
+
+                                </textarea>
+                                <div className="flex justify-between items-center mt-2 ">
+                                  <div className=" flex gap-8 text-xl">
+                                  <IoImageOutline onClick={handleSelectImage} />
+                                  <HiOutlineGif />
+                                  <BsEmojiSmile />
+                                  <GoTasklist />
+                                  <CiLocationOn />
+                                  </div>
+                                  <div>
+                                  <button className="px-4 py-2 bg-blue-400 font-bold hover:bg-blue-500 rounded-full cursor-pointer transition-all">
+                                    Tweet
+                                  </button> 
+                                  </div>
+                                </div>
+                              </div>
+              
+                          </div>
+                          
+                      </div>
+            </div>
+                
                 <FeedCard />
           </div>
           <div className="col-span-3 p-5 w-fit">
