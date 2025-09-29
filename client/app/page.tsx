@@ -13,6 +13,8 @@ import { useCallback } from "react";
 import toast from "react-hot-toast";
 import graphQLClient from "@/clients/api";
 import { verifyGoogleToken} from "@/graphql/query/user";
+import { useCurrentUser } from "@/hooks/user";
+import { useQueryClient } from "@tanstack/react-query";
 // import { useCurrentUser } from "@/hooks/user";
 
 interface TwitterIconProps {
@@ -56,9 +58,9 @@ const sidebarMenuIcons: TwitterIconProps[] = [
 ]
 
 export default function Home() {
-
-// const {user} = useCurrentUser();
-// console.log(user)
+const queryClient = useQueryClient();
+ const {user} = useCurrentUser();
+ console.log(user)
 
 const handleLoginWithGoogle =useCallback(async(cred: CredentialResponse) => {
 
@@ -71,7 +73,12 @@ const handleLoginWithGoogle =useCallback(async(cred: CredentialResponse) => {
 
   if(res.verifyGoogleToken){
     window.localStorage.setItem("__twitterAccessToken", res.verifyGoogleToken);
+  
   }
+  //automatic
+  await queryClient.invalidateQueries({
+    queryKey: ['current-user'],
+  });
   
 }, []);
   return (
@@ -108,10 +115,13 @@ const handleLoginWithGoogle =useCallback(async(cred: CredentialResponse) => {
                 <FeedCard />
           </div>
           <div className="col-span-3 p-5 w-fit">
-             <div className="border border-gray-200 p-5 bg-gray-600 rounded-lg">
+             {
+              !user && 
+              <div className="border border-gray-200 p-5 bg-gray-600 rounded-lg">
               <h1 className="text-2xl my-2 ">New to Twitter?</h1>
              <GoogleLogin onSuccess={handleLoginWithGoogle} />
              </div>
+             }
           </div>
         </div>
       </div> 

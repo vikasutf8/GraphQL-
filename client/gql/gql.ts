@@ -14,12 +14,12 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-    "#graphql\n    query VerifyUserGoogleToken($token: String!) {\n        verifyGoogleToken(token: $token)\n    }\n": typeof types.VerifyUserGoogleTokenDocument,
-    "#graphql\n    query GetCurrentUser {\n        getCurrentUser{\n            id\n            firstName\n            lastName\n            email\n            profileImageUrl\n        }\n    }\n": typeof types.GetCurrentUserDocument,
+    "\n    #graphql\n    query VerifyUserGoogleToken($token: String!) {\n      verifyGoogleToken(token: $token)\n    }\n  ": typeof types.VerifyUserGoogleTokenDocument,
+    "\n    #graphql\n    query GetCurrentUserQuery {\n      getCurrentUser {\n        id\n        firstName\n        lastName\n        email\n        profileImageUrl\n      }\n    }\n  ": typeof types.GetCurrentUserQueryDocument,
 };
 const documents: Documents = {
-    "#graphql\n    query VerifyUserGoogleToken($token: String!) {\n        verifyGoogleToken(token: $token)\n    }\n": types.VerifyUserGoogleTokenDocument,
-    "#graphql\n    query GetCurrentUser {\n        getCurrentUser{\n            id\n            firstName\n            lastName\n            email\n            profileImageUrl\n        }\n    }\n": types.GetCurrentUserDocument,
+    "\n    #graphql\n    query VerifyUserGoogleToken($token: String!) {\n      verifyGoogleToken(token: $token)\n    }\n  ": types.VerifyUserGoogleTokenDocument,
+    "\n    #graphql\n    query GetCurrentUserQuery {\n      getCurrentUser {\n        id\n        firstName\n        lastName\n        email\n        profileImageUrl\n      }\n    }\n  ": types.GetCurrentUserQueryDocument,
 };
 
 /**
@@ -39,11 +39,11 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "#graphql\n    query VerifyUserGoogleToken($token: String!) {\n        verifyGoogleToken(token: $token)\n    }\n"): (typeof documents)["#graphql\n    query VerifyUserGoogleToken($token: String!) {\n        verifyGoogleToken(token: $token)\n    }\n"];
+export function graphql(source: "\n    #graphql\n    query VerifyUserGoogleToken($token: String!) {\n      verifyGoogleToken(token: $token)\n    }\n  "): (typeof documents)["\n    #graphql\n    query VerifyUserGoogleToken($token: String!) {\n      verifyGoogleToken(token: $token)\n    }\n  "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "#graphql\n    query GetCurrentUser {\n        getCurrentUser{\n            id\n            firstName\n            lastName\n            email\n            profileImageUrl\n        }\n    }\n"): (typeof documents)["#graphql\n    query GetCurrentUser {\n        getCurrentUser{\n            id\n            firstName\n            lastName\n            email\n            profileImageUrl\n        }\n    }\n"];
+export function graphql(source: "\n    #graphql\n    query GetCurrentUserQuery {\n      getCurrentUser {\n        id\n        firstName\n        lastName\n        email\n        profileImageUrl\n      }\n    }\n  "): (typeof documents)["\n    #graphql\n    query GetCurrentUserQuery {\n      getCurrentUser {\n        id\n        firstName\n        lastName\n        email\n        profileImageUrl\n      }\n    }\n  "];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
