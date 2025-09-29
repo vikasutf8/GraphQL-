@@ -9,7 +9,7 @@ import { LiaTwitterSquare } from "react-icons/lia";
 import { CgProfile,CgMoreO  } from "react-icons/cg";
 import FeedCard from "@/components/FeedCard";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import graphQLClient from "@/clients/api";
 import { verifyGoogleToken} from "@/graphql/query/user";
@@ -20,7 +20,7 @@ import { HiOutlineGif } from "react-icons/hi2";
 import { BsEmojiSmile } from "react-icons/bs";
 import { GoTasklist } from "react-icons/go";
 import { CiLocationOn } from "react-icons/ci";
-import { useGetAllTweets } from "@/hooks/tweet";
+import { useCreateTweet, useGetAllTweets } from "@/hooks/tweet";
 import { Tweet } from "@/gql/graphql";
 // import { useCurrentUser } from "@/hooks/user";
 
@@ -68,7 +68,8 @@ export default function Home() {
 const queryClient = useQueryClient();
  const {user} = useCurrentUser();
 const {tweets=[]} = useGetAllTweets();//initial value
-console.log(tweets)
+const {mutateAsync: createTweet} =useCreateTweet();
+const [content, setContent] = useState ('');
 
 const handleLoginWithGoogle =useCallback(async(cred: CredentialResponse) => {
 
@@ -96,6 +97,11 @@ const handleSelectImage = useCallback(() => {
     input.accept = 'image/*';
     input.click();
 }, []);
+
+const handleCreateTweet =useCallback(() => {
+   createTweet({content})
+    
+}, [content,createTweet]); 
 
 
   return (
@@ -148,7 +154,8 @@ const handleSelectImage = useCallback(() => {
                               </div>
                               <div className='col-span-11'>
                                 <textarea
-                                 
+                                 value={content}
+                                 onChange={(e) => setContent(e.target.value)}
                                  className="w-full bg-transparent text-xl px-3 border-b border-gray-600 outline-none" 
                                  placeholder="What is on your mind?"
                                 rows={4}>
@@ -163,7 +170,9 @@ const handleSelectImage = useCallback(() => {
                                   <CiLocationOn />
                                   </div>
                                   <div>
-                                  <button className="px-4 py-2 bg-blue-400 font-bold hover:bg-blue-500 rounded-full cursor-pointer transition-all">
+                                  <button
+                                  onClick={handleCreateTweet}
+                                  className="px-4 py-2 bg-blue-400 font-bold hover:bg-blue-500 rounded-full cursor-pointer transition-all">
                                     Tweet
                                   </button> 
                                   </div>
