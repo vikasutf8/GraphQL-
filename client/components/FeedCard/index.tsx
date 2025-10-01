@@ -39,7 +39,7 @@ interface FeedCardProps {
 }
 
 const FeedCard: React.FC<FeedCardProps> = ({data}) => {
-    console.log(data,"data at feed card")
+    // console.log(data,"data at feed card")
     return (
         <>
         <div className=' border border-r-0 border-b-0 border-l-0 border-gray-600 p-5 hover:bg-slate-900 transition-all cursor-pointer' >

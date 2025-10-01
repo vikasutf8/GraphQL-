@@ -1,8 +1,8 @@
 
 "use client"
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import Image from "next/image";
-
+import Link from 'next/link';
 
 import { FaSquareXTwitter } from 'react-icons/fa6';
 import { IoMdHome } from 'react-icons/io';
@@ -22,53 +22,65 @@ import graphQLClient from '@/clients/api';
 import { verifyGoogleToken } from '@/graphql/query/user';
 
 
+
 interface TwitterLayoutProps {
     children: React.ReactNode;
 }
 interface TwitterIconProps {
     title: string;
     icon: React.ReactNode;
+    link :string
 }
 
-const sidebarMenuIcons: TwitterIconProps[] = [
-    {
-        title: "Home",
-        icon: <IoMdHome />
-    },
-    {
-        title: "Explore",
-        icon: <CiHashtag />
-    },
-    {
-        title: "Notifications",
-        icon: <RiNotification4Line />
-    },
-    {
-        title: "Messages",
-        icon: <FaRegEnvelope />
-    },
-    {
-        title: "Bookmarks",
-        icon: <CiBookmark />
-    },
-    {
-        title: "Twitter Blue",
-        icon: <LiaTwitterSquare />
-    },
-    {
-        title: "Profile",
-        icon: <CgProfile />
-    },
-    {
-        title: "More",
-        icon: <CgMoreO />
-    },
-]
 
 
 const TwitterLayout: React.FC<TwitterLayoutProps> = ({ children }) => {
     const queryClient = useQueryClient();
     const { user } = useCurrentUser();
+
+    const sidebarMenuIcons: TwitterIconProps[] = useMemo(() => 
+        [
+            {
+                title: "Home",
+                icon: <IoMdHome />,
+                link: "/",
+            },
+            {
+                title: "Explore",
+                icon: <CiHashtag />,
+                link: "/explore",
+            },
+            {
+                title: "Notifications",
+                icon: <RiNotification4Line />   ,
+                link: "/notifications",
+            },
+            {
+                title: "Messages",
+                icon: <FaRegEnvelope />,
+                link: "/messages",
+            },
+            {
+                title: "Bookmarks",
+                icon: <CiBookmark />,
+                link: "/bookmarks",
+            },
+            {
+                title: "Twitter Blue",
+                icon: <LiaTwitterSquare />,
+                link: "/twitter-blue",
+            },
+            {
+                title: "Profile",
+                icon: <CgProfile />,
+                link: `/${user?.id}`,
+            },
+            {
+                title: "More",
+                icon: <CgMoreO />,
+                link: "/more",
+            },
+        ], [user?.id]);
 
     const handleLoginWithGoogle = useCallback(async (cred: CredentialResponse) => {
 
@@ -93,7 +105,7 @@ const TwitterLayout: React.FC<TwitterLayoutProps> = ({ children }) => {
     return (
         <div className="grid grid-cols-12 h-screen w-screen px-56">
 
-            <div className="col-span-3  pt-8 flex justify-end px-32 relative border-2 border-gray-600">
+            <div className="col-span-3  pt-8 flex justify-end px-32 relative">
                 <div className=''>
                     <div className="p-2 text-4xl h-fit w-fit hover:bg-gray-500 hover:rounded-full cursor-pointer transition-all relative">
                         <FaSquareXTwitter />
@@ -103,10 +115,12 @@ const TwitterLayout: React.FC<TwitterLayoutProps> = ({ children }) => {
                             {
                                 sidebarMenuIcons.map((item, index) => (
                                     <li key={index} className=" flex flex-col mt-5">
-                                        <div className="px-4 py-2 flex align-center gap-5 h-fit w-fit hover:bg-gray-500 hover:rounded-full cursor-pointer transition-all">
+                               
+                                            <Link  href={item.link} className="px-4 py-2 flex align-center gap-5 h-fit w-fit hover:bg-gray-500 hover:rounded-full cursor-pointer transition-all">
                                             <span className="text-2xl">{item.icon}</span>
                                             <span className="text-xl">{item.title}</span>
-                                        </div>
+                                            </Link>
+                                       
 
                                     </li>
                                 ))
