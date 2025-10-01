@@ -7,5 +7,9 @@ export const types =`#graphql
     profileImageUrl: String
 
     tweets: [Tweet]
+
+    followers: [User]
+    following: [User]
   }
 `;
+

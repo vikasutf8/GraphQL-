@@ -3,6 +3,7 @@ import prisma from "../../clients/db";
 import JwtService from "../../services/jwt";
 import { GraphqlContext } from "../../interface";
 import { User } from "../../../generated/prisma";
+import UserService from "../../services/user";
 
 export interface GoogleTokenResult {
   iss?: string;
@@ -62,41 +63,77 @@ const queries = {
     return userToken;
   },
 
-    getCurrentUser: async (parent: any, args: any, context: GraphqlContext) => {
-        
-        const id = context.user?.id;
-        console.log(id)
-        if (!id) return null;
-        // return context.user;
-        const user = await prisma.user.findUnique({
-        where: {
-            id,
-        },
-        });
-        return user;
-    },
+  getCurrentUser: async (parent: any, args: any, context: GraphqlContext) => {
+    const id = context.user?.id;
+    console.log(id);
+    if (!id) return null;
+    // return context.user;
+    const user = await prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+    return user;
+  },
 
-    getUserById: async (parent: any, { id }: { id: string }, context: GraphqlContext) => {
-        const user = await prisma.user.findUnique({ where: { id } });
-        return user;
-    },
+  getUserById: async (
+    parent: any,
+    { id }: { id: string },
+    context: GraphqlContext
+  ) => {
+    const user = await prisma.user.findUnique({ where: { id } });
+    return user;
+  },
 };
 
-const extraResolvers={
-    User:{
-        tweets: (parent:User) => {
-            return prisma.tweet.findMany({
-                where: {
-                    autherId: parent.id,
-                },
-            });
+const extraResolvers = {
+  User: {
+    tweets: (parent: User) => {
+      return prisma.tweet.findMany({
+        where: {
+          autherId: parent.id,
         },
+      });
     },
-}
+    followers:async (parent: User) => {
+      const res= await prisma.follows.findMany({ where: { following:{id:parent.id} }, include: { follower: true, following: true } });
+      return res.map(item => item.follower);
+    },
+    following: async(parent: User) => {
+      const res= await prisma.follows.findMany({ where: { follower:{id:parent.id} }, include: { following: true, follower: true } });
+      return res.map(item => item.following);
+    },
+  },
+};
 
+const mutations = {
+  followUser: async (
+    parent: any,
+    { to }: { to: string },
+    context: GraphqlContext
+  ) => {
+    const from = context.user?.id;
+    if (!from) throw new Error("You must be logged in to follow a user");
 
+    await UserService.followUser(from, to);
+    return true;
+  },
+
+  unfollowUser: async (
+    parent: any,
+    { to }: { to: string }, 
+    context: GraphqlContext
+  ) => {
+    const from = context.user?.id;
+    if (!from) throw new Error("You must be logged in to follow a user");
+
+    await UserService.unfollowUser(from, to);
+    return true;
+  },
+};
 
 export const resolvers = {
   queries,
   extraResolvers,
+  mutations,
 };

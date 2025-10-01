@@ -162,3 +162,37 @@ query GetAllTweets {
   }
 
   ```
+
+- Follow User
+```
+mutation Mutation($to: ID!) {
+  followUser(to: $to)
+}
+```
+
+- Unfollow User
+```
+mutation UnfollowUser($to: ID!) {
+  unfollowUser(to: $to)
+}
+```
+
+- Get User Followers
+```
+query Query {
+  getCurrentUser {
+    email
+    firstName
+    id
+    followers {
+      id
+      firstName
+    }
+    following {
+      email
+      id
+      firstName
+    }
+  }
+}
+```

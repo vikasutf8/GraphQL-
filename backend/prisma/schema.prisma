@@ -15,25 +15,40 @@ datasource db {
 }
 
 model User {
-  id String @id @default(uuid())
-  firstName String
-  lastName String?
-  email String @unique
+  id              String   @id @default(uuid())
+  firstName       String
+  lastName        String?
+  email           String   @unique
   profileImageUrl String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   tweets Tweet[]
+
+  followers Follows[] @relation("follower")
+  following Follows[] @relation("following")
 }
 
 model Tweet {
-  id String @id @default(uuid())
-  content String
+  id            String  @id @default(uuid())
+  content       String
   tweetImageUrl String?
 
-  auther User @relation(fields: [autherId], references: [id])
+  auther   User   @relation(fields: [autherId], references: [id])
   autherId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Follows {
+  follower   User   @relation("follower", fields: [followerId], references: [id])
+  followerId String
+
+  following   User   @relation("following", fields: [followingId], references: [id])
+  followingId String
+
+  @@id([followerId, followingId])
+}
+
+// composite key
