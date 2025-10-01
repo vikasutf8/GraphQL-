@@ -144,3 +144,21 @@ query GetAllTweets {
 }
 ```
 
+- Get User By Id
+```
+  getUserById(id: $getUserByIdId) {
+    id
+    lastName
+    firstName
+    profileImageUrl
+    tweets {
+      id
+      content
+      auther {
+        firstName
+        email
+      }
+    }
+  }
+
+  ```

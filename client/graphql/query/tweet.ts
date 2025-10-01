@@ -10,6 +10,7 @@ export const getAllTweetsQuery = graphql(`
         content
         tweetImageUrl
         auther {
+          id
           firstName
           lastName
           profileImageUrl

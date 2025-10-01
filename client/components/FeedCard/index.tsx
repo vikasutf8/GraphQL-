@@ -5,6 +5,7 @@ import { FaRetweet } from "react-icons/fa6";
 import { FaComments } from "react-icons/fa";
 import { HiSaveAs } from "react-icons/hi";
 import { Tweet } from '@/gql/graphql';
+import Link from 'next/link';
 
 interface FeedCardIconProps {
     title: string;
@@ -50,7 +51,9 @@ const FeedCard: React.FC<FeedCardProps> = ({data}) => {
                 }
                 </div>
                 <div className='col-span-11'>
-                    <h5 className='font-bold'>{data.auther.firstName} {data.auther.lastName}</h5>
+                  <Link href={`/${data.auther.id}`}>
+                 {data.auther.firstName} {data.auther.lastName} 
+                  </Link>
                     <p>
                        {data.content}
                     </p>

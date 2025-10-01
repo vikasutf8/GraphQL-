@@ -75,6 +75,11 @@ const queries = {
         });
         return user;
     },
+
+    getUserById: async (parent: any, { id }: { id: string }, context: GraphqlContext) => {
+        const user = await prisma.user.findUnique({ where: { id } });
+        return user;
+    },
 };
 
 const extraResolvers={
@@ -88,6 +93,8 @@ const extraResolvers={
         },
     },
 }
+
+
 
 export const resolvers = {
   queries,
