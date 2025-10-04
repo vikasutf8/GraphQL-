@@ -20,6 +20,7 @@ import toast from 'react-hot-toast';
 import { useCurrentUser } from '@/hooks/user';
 import graphQLClient from '@/clients/api';
 import { verifyGoogleToken } from '@/graphql/query/user';
+import { User } from '@/gql/graphql';
 
 
 
@@ -29,7 +30,7 @@ interface TwitterLayoutProps {
 interface TwitterIconProps {
     title: string;
     icon: React.ReactNode;
-    link :string
+    link: string
 }
 
 
@@ -38,7 +39,7 @@ const TwitterLayout: React.FC<TwitterLayoutProps> = ({ children }) => {
     const queryClient = useQueryClient();
     const { user } = useCurrentUser();
 
-    const sidebarMenuIcons: TwitterIconProps[] = useMemo(() => 
+    const sidebarMenuIcons: TwitterIconProps[] = useMemo(() =>
         [
             {
                 title: "Home",
@@ -52,7 +53,7 @@ const TwitterLayout: React.FC<TwitterLayoutProps> = ({ children }) => {
             },
             {
                 title: "Notifications",
-                icon: <RiNotification4Line />   ,
+                icon: <RiNotification4Line />,
                 link: "/notifications",
             },
             {
@@ -115,12 +116,12 @@ const TwitterLayout: React.FC<TwitterLayoutProps> = ({ children }) => {
                             {
                                 sidebarMenuIcons.map((item, index) => (
                                     <li key={index} className=" flex flex-col mt-5">
-                               
-                                            <Link  href={item.link} className="px-4 py-2 flex align-center gap-5 h-fit w-fit hover:bg-gray-500 hover:rounded-full cursor-pointer transition-all">
+
+                                        <Link href={item.link} className="px-4 py-2 flex align-center gap-5 h-fit w-fit hover:bg-gray-500 hover:rounded-full cursor-pointer transition-all">
                                             <span className="text-2xl">{item.icon}</span>
                                             <span className="text-xl">{item.title}</span>
-                                            </Link>
-                                       
+                                        </Link>
+
 
                                     </li>
                                 ))
@@ -151,13 +152,32 @@ const TwitterLayout: React.FC<TwitterLayoutProps> = ({ children }) => {
             </div>
             <div className="col-span-3 p-5 w-fit">
                 {
-                    !user &&
-                    <div className="border border-gray-200 p-5 bg-gray-600 rounded-lg">
-                        <h1 className="text-2xl my-2 ">New to Twitter?</h1>
-                        <GoogleLogin onSuccess={handleLoginWithGoogle} />
+                    user ?
+                        (<div className="border border-gray-200 p-5 bg-gray-600 rounded-lg">
+                            <h1 className="text-2xl my-2 ">New to Twitter?</h1>
+                            <GoogleLogin onSuccess={handleLoginWithGoogle} />
 
-                    </div>
+                        </div>) : (
+                          <div className='border border-gray-200 p-5 bg-gray-600 rounded-lg'> 
+                            <h1 className="text-2xl my-2 ">Might want to Connect</h1>
+                              {
+                                user.recommendedUsers?.map((el: User) => (
+                                <div className='flex-col flex items-center gap-2'
+                                 key={el.id}>
+                                    {el.profileImageUrl && <Image src={el.profileImageUrl} alt="Profile Image" width={50} height={50} className="rounded-full" />}
+                                    <div className="flex gap-2">
+                                        <h3 className="text-xl">{el.firstName}</h3>
+                                        <h3 className="text-xl">{el.lastName}</h3>
+                                    </div>
+                                   <Link href={`/${el.id}`} className="px-12 py-2 bg-blue-400 hover:bg-blue-500 rounded-full cursor-pointer transition-all">Profile</Link>
+                                </div>
+                                ))
+                            }
+                          </div>
+                        )
                 }
+                
+
             </div>
         </div>
     )
