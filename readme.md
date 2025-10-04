@@ -196,3 +196,10 @@ query Query {
   }
 }
 ```
+
+
+# Redis 
+- key-value store
+- ALL_TWEETS
+- RECOMMENDED_USERS${userId}
+- 

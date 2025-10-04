@@ -1,6 +1,7 @@
 import { PrismaClient, Tweet } from "../../../generated/prisma";
 import { GraphqlContext } from "../../interface";
 import prisma from "../../clients/db";
+import redis from "../../clients/redis";
 interface CreateTweetData {
     content: string;
     tweetImageUrl?: string;
@@ -22,6 +23,7 @@ const mutations = {
                 },
             },
         });
+        await redis.del(`ALL_TWEETS`);
         return tweet;
     },
 }; 
@@ -40,11 +42,16 @@ const extraResolvers={
 
 const queries={
     getAllTweets: async (parent:any, args:any, context:GraphqlContext) => {
+        const cachedTweets = await redis.get(`ALL_TWEETS`);
+        if(cachedTweets){
+            return JSON.parse(cachedTweets);
+        }
         const tweets = await prisma.tweet.findMany({
            orderBy: {
             createdAt: "desc",
            },
         });
+        await redis.set(`ALL_TWEETS`, JSON.stringify(tweets));
         return tweets;
     },
 }

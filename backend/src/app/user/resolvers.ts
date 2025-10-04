@@ -4,6 +4,7 @@ import JwtService from "../../services/jwt";
 import { GraphqlContext } from "../../interface";
 import { User } from "../../../generated/prisma";
 import UserService from "../../services/user";
+import redis from "../../clients/redis";
 
 export interface GoogleTokenResult {
   iss?: string;
@@ -112,6 +113,13 @@ const extraResolvers = {
   },
   recommendedUsers: async (parent: User, _: any, context: GraphqlContext) => {
     if (!context.user) return [];
+
+
+  const cachedRecommendedUsers = await redis.get(`RECOMMENDED_USERS_${context.user.id}`);
+  if (cachedRecommendedUsers) {
+    return JSON.parse(cachedRecommendedUsers);
+  }
+
     const myFollowings = await prisma.follows.findMany({
       where: { follower: { id: context.user.id } },
       include: {
@@ -129,12 +137,16 @@ const extraResolvers = {
     const users :User[] = [];
     for(const following of myFollowings){
       for(const followingofFollowerUser of following.following.followers){
-        if( followingofFollowerUser.following.id !== context.user.id && myFollowings.findIndex(e =>e.followingId === followingofFollowerUser.following.id )<0){
+        if( followingofFollowerUser.following.id !== context.user.id && 
+            myFollowings.findIndex(e =>e.followingId === followingofFollowerUser.following.id )<0){
            users.push(followingofFollowerUser.following);
 
         }
       }
     }
+
+    await redis.set(`RECOMMENDED_USERS_${context.user.id}`, JSON.stringify(users));
+    
     return users;
   },
 };
@@ -149,6 +161,7 @@ const mutations = {
     if (!from) throw new Error("You must be logged in to follow a user");
 
     await UserService.followUser(from, to);
+    await redis.del(`RECOMMENDED_USERS_${from}`); 
     return true;
   },
 
@@ -161,6 +174,7 @@ const mutations = {
     if (!from) throw new Error("You must be logged in to follow a user");
 
     await UserService.unfollowUser(from, to);
+    await redis.del(`RECOMMENDED_USERS_${from}`); //re-compute RecommendedUsers on each follow/unfollow
     return true;
   },
 };
