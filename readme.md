@@ -198,8 +198,10 @@ query Query {
 ```
 
 
-# Redis 
+## Redis 
 - key-value store
 - ALL_TWEETS
 - RECOMMENDED_USERS${userId}
-- 
+
+#### Rate Limiting
+- Avoid Spamming to avoid DDOS attacks, via redis

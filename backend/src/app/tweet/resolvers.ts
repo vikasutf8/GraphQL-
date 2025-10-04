@@ -11,6 +11,10 @@ const mutations = {
         if(!context.user){
             throw new Error("Login to tweet");
         }
+        const rateLimitFlag = await redis.get(`RATE_LIMIT:TWEET:${context.user.id}`);
+        if(rateLimitFlag){
+            throw new Error("Please wait a while !!");
+        }
         const {content, tweetImageUrl} = payload;
         const tweet =await prisma.tweet.create({
             data: {
@@ -23,6 +27,7 @@ const mutations = {
                 },
             },
         });
+        await redis.setex(`RATE_LIMIT:TWEET:${context.user.id}`, 30, 1);
         await redis.del(`ALL_TWEETS`);
         return tweet;
     },
