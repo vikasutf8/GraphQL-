@@ -95,14 +95,47 @@ const extraResolvers = {
         },
       });
     },
-    followers:async (parent: User) => {
-      const res= await prisma.follows.findMany({ where: { following:{id:parent.id} }, include: { follower: true, following: true } });
-      return res.map(item => item.follower);
+    followers: async (parent: User) => {
+      const res = await prisma.follows.findMany({
+        where: { following: { id: parent.id } },
+        include: { follower: true, following: true },
+      });
+      return res.map((item) => item.follower);
     },
-    following: async(parent: User) => {
-      const res= await prisma.follows.findMany({ where: { follower:{id:parent.id} }, include: { following: true, follower: true } });
-      return res.map(item => item.following);
+    following: async (parent: User) => {
+      const res = await prisma.follows.findMany({
+        where: { follower: { id: parent.id } },
+        include: { following: true, follower: true },
+      });
+      return res.map((item) => item.following);
     },
+  },
+  recommendedUsers: async (parent: User, _: any, context: GraphqlContext) => {
+    if (!context.user) return [];
+    const myFollowings = await prisma.follows.findMany({
+      where: { follower: { id: context.user.id } },
+      include: {
+        following: {
+          include: {
+            followers:{
+              include: {
+                following: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    const users :User[] = [];
+    for(const following of myFollowings){
+      for(const followingofFollowerUser of following.following.followers){
+        if( followingofFollowerUser.following.id !== context.user.id && myFollowings.findIndex(e =>e.followingId === followingofFollowerUser.following.id )<0){
+           users.push(followingofFollowerUser.following);
+
+        }
+      }
+    }
+    return users;
   },
 };
 
@@ -121,7 +154,7 @@ const mutations = {
 
   unfollowUser: async (
     parent: any,
-    { to }: { to: string }, 
+    { to }: { to: string },
     context: GraphqlContext
   ) => {
     const from = context.user?.id;
